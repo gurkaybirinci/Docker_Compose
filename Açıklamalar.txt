@@ -1,0 +1,73 @@
+GitHub Dosyası (Örnek Test Projesi)
+https://github.com/gurkaybirinci/Docker_Compose
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+AWS (Amazon Web Server)'da Bilgisayar Kurulumu
+    - "aws.amazon.com" sitesine üye girişi yap.
+    - "Console Home" başlıklı bir sayfa açılır. Bu sayfadaki "EC2" seçeneğine tıkla.
+    - Soldaki menüden "Instances" seçeneğine tıkla.
+    - Sağ üstteki "Launch Instances" butonuna tıkla.
+    - "Application and OS Images" bölümündeki arama kutusuna "docker compose" yazıp arat.
+    - Arama sonuçları sayfasının üstündeki seçeneklerden "Community AMIs" seçeneğine tıkla.
+    - Arama sonuçları arasında "docker-linux-ami-amazon-1660676807" seçeneğini bul ve "Select" butonuna bas.
+    - "Instance type" bölümündeki menüden "t2.medium" seçeneğini seç.
+    - "Key pair (login)" bölümündeki "Create new key pair" seçeneğine tıkla.
+    - "Key pair name" bölümüne herhangi bir isim girerek "Create key pair" butonuna bas.
+    - Verdiğin isimde pem uzantılı bir dosya oluşturulur ve bilgisayarına kaydedilir. Bu dosyanın adresine ileride ihtiyacın olacak.
+    - "Network settings" bölümündeki "Edit" butonuna bas.
+    - "Add security group role" butonuna tıkla.
+    - "Type" bölümünde "Custom TCP" yazan menüye tıkla ve "All TCP" seçeneğini seç.
+    - "Source type" bölümünde "Custom" yazan menüye tıkla ve "My IP" seçeneğini seç.
+    - Sağdaki "Launch Instance" butonuna tıkla.
+    - AWS bilgsayarı kurulumu tamamlanmış oldu.
+
+    NOT:
+    - View all instances" butonuna tıkla.
+    - Sayfadaki "Instances" bölümünde sahip olduğun AWS bilgisayarları görünür. Yanında "Running" yazan bilgisayar yeni oluşturduğun bilgisayardır.
+    - Bu bilgisayarın üzerine tıklayıp seçtiğinde sayfanın altında bilgisayara ait özelliklerin yazılı olduğu bir bölüm açılır.
+    - Bu bölümdeki "Instances Summary" içerisinde "Public IPv4 address" başlığı altında bu bilgisayara ait bir IP adresi görmelisin.
+    - Bu IP adresini bundan sonraki süreçte kullanacaksın.
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+AWS (Amazon Web Server) Bilgisayarımızda Docker Compose Kurulumu
+    - Yukarıda oluşturduğun pem uzantılı dosyanın adresini kopyala. (Dosyaya sağ tıkla, "Özellikler" seçeneğine tıkla, "Konum" yazan bölümdeki adresi kopyala)
+    - "Git Bash" programını aç.
+    - cd komutundan sonra bir boşluk bırakarak sağ tuşla tıklayıp dosya adresini yapıştır. (cd D:\İndirilenler) gibi..
+    - Enter tuşuna bas. Gelen ekranda "yes" yazarak yine Enter tuşuna bas.
+    - "ssh -i dosyaismi.pem ec2-user@awsipadresi" --> Bu koddaki dosyaismi yazan kısma kendi pem dosyanızın adını,
+      awsipadresi yazan bölüme de AWS'deki bilgisayarınızın IP adresini girin. (Örneğin: ssh -i docker.pem ec2-user@23.23.75.178)
+    - "sudo yum update" komutunu yaz ve Enter'a bas. Bu komut AWS bilgisayarına Docker ve Docker Compose programlarını kurar.
+    - "sudo yum install java-1.8.0-openjdk" komutunu yaz ve Enter'a bas. Bu komut AWS bilgisayarına Java yükler.
+    - Aşağıdaki komutlar ile AWS bilgisayarına kurulan programların versiyonlarını öğrenebilirsin. Böylece kurulup kurulmadığını anlayabilirsin.
+        - java -version
+        - docker -v
+        - docker-compose -v
+    - "touch docker-compose.yml" komutunu yaz ve Enter'a bas. Bu komut docker-compose.yml isimli boş bir bir yml dosyası oluşturur.
+        - ls komutu yazıp Enter'a bastığında docker-compose.yml isimli dosyayı görüyorsan dosyan oluşturulmuş demektir.
+    - "vi docker-compose.yml" komutunu yaz ve Enter'a bas. Bu komut oluşturduğun docker-compose.yml isimli dosyayı açar.
+    - GitHub'dan indirdiğin proje dosyasındaki SetupSeleniumGrid4.yml sayfasındaki içeriği kopyala ve sağ tuş ile tıklayarak Git Bash'taki açtığın dosyaya yapıştır.
+    - ESC tuşuna bas, ":wq" komutunu yaz ve Enter'a bas. (Böylece dosyada yaptığın değişiklikler kaydedilir ve dosya kapatılır, tekrar komut ekranına dönersin.
+    - "sudo docker-compose up" komutunu yaz ve Enter'a bas. Bu komut oluşturduğun dosyadaki komutları çalıştırır ve Chrome, Edge ve Firefox browser'ları için konteynırlar oluşturur.
+    - Docker Compose ve konteynırların kurulumu tamamlanmış oldu.
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+Projedeki Testi Çalıştırma
+    - Yeni bir "Git Bash" programı aç.
+    - cd komutundan sonra bir boşluk bırakarak sağ tuşla tıklayıp dosya adresini yapıştır. (cd D:\İndirilenler) gibi..
+    - Enter tuşuna bas. Gelen ekranda "yes" yazarak yine Enter tuşuna bas.
+    - "ssh -i dosyaismi.pem ec2-user@awsipadresi" --> Bu koddaki dosyaismi yazan kısma kendi pem dosyanızın adını,
+          awsipadresi yazan bölüme de AWS'deki bilgisayarınızın IP adresini girin. (Örneğin: ssh -i docker.pem ec2-user@23.23.75.178)
+    - "sudo docker ps -a" komutunu yaz ve Enter'a bas. Bu komut AWS bilgisayarında kurduğun konteynırlara ait port bilgilerini ve diğer bilgileri gösterir.
+    - IMAGE başlığı altında selenium/hub seçeneğini bul. PORTS başlığı altında en sonda ":::4445->4444/tcp" benzeri numaralar göreceksin.
+      Bu sayılardan ilkini browser'da Selenium Grid'e girmek için kullancaksın.
+    - Browser'ını aç, adres bölümüne AWS bilgisayar IP'ni ve yukarıda aldığın port numarasını örnekteki gibi gir: (Örnek: 23.23.75.178:4445)
+    - IMAGE başlığı altında selenium/node-edge, selenium/node-firefox, selenium/node-chrome seçeneklerini bul.
+      PORTS başlığı altında en sonra :::49155->7900/tcp benzeri numaralar göreceksin. Bu sayılardan ilkini browser'da testlerini görmek için kullancaksın.
+    - Browser'ında bir sekme aç, adres bölümüne AWS bilgisayar IP'ni ve yukarıda aldığın port numarasını örnekteki gibi gir: (Örnek: 23.23.75.178:49155)
+    - Bu işlemi tüm browerser seçenekleri için yap. Her browser için port numarası farklı olacaktır.
+    - Açılan ekranda "BAĞLAN" butonuna bas ve şifre olarak "secret" gir. Bu ekranlardan, biraz sonra çalıştıracağın testleri izleyebilirsin.
+    - Projedeki Demo class'ını aç, BeforeTest metodunun içindeki "driver = new RemoteWebDriver(new URL("http://awsipadresi:4445/wd/hub"), capabilities);" kodunu bul.
+    - Bu koddaki awsipadresi metnini kendi AWS bilgisayar IP numaranla değiştir.
+    - TestNGDocker.xml dosyasını aç ve testi çalıştır.
+    - Test sürecini, açtığın browser'larda izleyebilirsin.
+    - Test çalıştırma işlemi tamamlanmış oldu.

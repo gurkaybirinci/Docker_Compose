@@ -33,7 +33,7 @@ public class Demo {
             System.out.println("###Test Case Execution Started On ==> " + browserType + "###");
         }
 
-        driver = new RemoteWebDriver(new URL("http://54.242.179.131:4445/wd/hub"), capabilities);
+        driver = new RemoteWebDriver(new URL("http://44.202.10.193:4445/wd/hub"), capabilities);
         driver.manage().window().maximize();
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(15));
     }
